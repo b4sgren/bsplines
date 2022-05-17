@@ -35,3 +35,35 @@ TEST_F(Spline3_Fixture, TestInitialization) {
     EXPECT_EQ(spline_->getKnotPoints().rows(),
               ctrl_pts_.rows() + spline_->degree()+1);
 }
+
+TEST_F(Spline3_Fixture, TestSplineEvaluation) {
+    double t = 2.5;
+    Eigen::Vector3d x = spline_->operator()(t);
+
+    double x_true{20.9583}, y_true{35.4167}, z_true{37.0833};
+
+    EXPECT_NEAR(x(0), x_true, 1e-3);
+    EXPECT_NEAR(x(1), y_true, 1e-3);
+    EXPECT_NEAR(x(2), z_true, 1e-3);
+
+    t = 0.0;
+    x_true = 0.0;
+    y_true = 0.0;
+    z_true = 0.0;
+
+    x = spline_->operator()(t);
+    EXPECT_NEAR(x(0), x_true, 1e-7);
+    EXPECT_NEAR(x(1), y_true, 1e-7);
+    EXPECT_NEAR(x(2), z_true, 1e-7);
+
+    t = 5.0;
+    x_true = 40.0;
+    y_true = 40.0;
+    z_true = 0.0;
+
+    x = spline_->operator()(t);
+    EXPECT_NEAR(x(0), x_true, 1e-7);
+    EXPECT_NEAR(x(1), y_true, 1e-7);
+    EXPECT_NEAR(x(2), z_true, 1e-7);
+
+}

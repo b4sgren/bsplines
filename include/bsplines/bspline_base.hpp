@@ -10,9 +10,9 @@ namespace spline {
 
 template <typename T, int K>
 class BSplineBase {
+ public:
     using MatrixXT = Eigen::Matrix<T, Eigen::Dynamic, Eigen::Dynamic>;
     using VectorXT = Eigen::Matrix<T, Eigen::Dynamic, 1>;
- public:
     EIGEN_MAKE_ALIGNED_OPERATOR_NEW
 
     BSplineBase() {}
@@ -27,13 +27,18 @@ class BSplineBase {
     }
     virtual ~BSplineBase();
 
+    VectorXT operator()(double t);
+
     int degree() const;
     MatrixXT getControlPoints() const;
     VectorXT getKnotPoints() const;
 
  protected:
-    // virtual void computeBasisMatrices() = 0;
+    virtual void computeBasisMatrices() = 0;
 
+ private:
+
+ protected:
     MatrixXT ctrl_pts_;
     VectorXT knot_pts_;
     std::vector<MatrixXT> M_;  // Vector of basis matrices
