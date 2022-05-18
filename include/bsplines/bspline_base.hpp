@@ -28,6 +28,7 @@ class BSplineBase {
     virtual ~BSplineBase();
 
     VectorXT operator()(double t);
+    VectorXT evaluateDerivative(double t, int n);
 
     int degree() const;
     MatrixXT getControlPoints() const;
@@ -35,6 +36,8 @@ class BSplineBase {
 
  protected:
     virtual void computeBasisMatrices() = 0;
+
+    double factorial(int i);
 
  private:
 

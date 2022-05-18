@@ -1,6 +1,13 @@
 #ifndef BSPLINES_BSPLINE3_HPP_
 #define BSPLINES_BSPLINE3_HPP_
 
+/*
+Code specifics for a 3rd order BSpline. 3rd order seems to be the most useful
+for what I want. If another order is needed the class can be modeled after this
+one. All the generalized code that does not depend on the spline order is in
+the bspline_base class
+*/
+
 #include "bspline_base.hpp"
 
 #include <cmath>
