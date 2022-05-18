@@ -69,7 +69,7 @@ TEST_F(Spline3_Fixture, TestSplineEvaluation) {
 
 }
 
-TEST_F(Spline3_Fixture, TestSplineTimeDerivativeEvaluation) {
+TEST_F(Spline3_Fixture, TestSpline1stOrderTimeDerivativeEvaluation) {
     double t = 2.5;
     int n = 1;
     Eigen::Vector3d x;
@@ -95,6 +95,39 @@ TEST_F(Spline3_Fixture, TestSplineTimeDerivativeEvaluation) {
     x_true = 0.0;
     y_true = 0.0;
     z_true = -30.0;
+
+    x = spline_->evaluateDerivative(t, n);
+    EXPECT_NEAR(x(0), x_true, 1e-7);
+    EXPECT_NEAR(x(1), y_true, 1e-7);
+    EXPECT_NEAR(x(2), z_true, 1e-7);
+}
+
+TEST_F(Spline3_Fixture, TestSpline3rdOrderTimeDerivativeEvaluation) {
+    double t = 2.5;
+    int n = 3;
+    Eigen::Vector3d x;
+    x = spline_->evaluateDerivative(t, n);
+
+    double x_true{4.0}, y_true{4.0}, z_true{-20.0};
+
+    EXPECT_NEAR(x(0), x_true, 1e-3);
+    EXPECT_NEAR(x(1), y_true, 1e-3);
+    EXPECT_NEAR(x(2), z_true, 1e-3);
+
+    t = 0.0;
+    x_true = 147.5;
+    y_true = -25.0;
+    z_true = -25.0;
+
+    x = spline_->evaluateDerivative(t, n);
+    EXPECT_NEAR(x(0), x_true, 1e-7);
+    EXPECT_NEAR(x(1), y_true, 1e-7);
+    EXPECT_NEAR(x(2), z_true, 1e-7);
+
+    t = 5.0;
+    x_true = -64.5;
+    y_true = -12.5;
+    z_true = -7.5;
 
     x = spline_->evaluateDerivative(t, n);
     EXPECT_NEAR(x(0), x_true, 1e-7);
