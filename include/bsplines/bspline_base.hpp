@@ -38,6 +38,7 @@ class BSplineBase {
     virtual void computeBasisMatrices() = 0;
 
     double factorial(int i);
+    int getI(double t);
 
  private:
 

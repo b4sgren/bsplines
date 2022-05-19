@@ -10,10 +10,7 @@ BSplineBase<T,K>::~BSplineBase() {}
 
 template<typename T, int K>
 typename BSplineBase<T,K>::VectorXT BSplineBase<T,K>::operator()(double t) {
-    // int i = static_cast<int>(std::floor((t - tr_.start)/dt_)); // Generalized version
-    int i = static_cast<int>(std::floor(t)) + K; // When start = 0 and dt = 1
-    if (i == ctrl_pts_.rows())  // Seems a tad hacky
-        i -= 1;
+    int i{getI(t)};
 
     T u = (t - knot_pts_(i))/(knot_pts_(i+1) - knot_pts_(i));
     VectorXT u_vec = VectorXT(K+1);
@@ -28,10 +25,7 @@ typename BSplineBase<T,K>::VectorXT BSplineBase<T,K>::operator()(double t) {
 template<typename T, int K>
 typename BSplineBase<T,K>::VectorXT BSplineBase<T,K>::evaluateDerivative
                                                         (double t, int n) {
-    // int i = static_cast<int>(std::floor((t - tr_.start)/dt_)); // Generalized version
-    int i = static_cast<int>(t) + K; // When start = 0 and dt = 1
-    if (i == ctrl_pts_.rows())
-        i -= 1;
+    int i{getI(t)};
 
     T u = (t - knot_pts_(i))/(knot_pts_(i+1) - knot_pts_(i));
     VectorXT u_vec = VectorXT(K+1);
@@ -54,6 +48,15 @@ double BSplineBase<T,K>::factorial(int n) {
         val *= i;
 
     return val;
+}
+
+template<typename T, int K>
+int BSplineBase<T,K>::getI(double t) {
+    // int i = static_cast<int>(std::floor((t - tr_.start)/dt_)); // Generalized version
+    int i = static_cast<int>(t) + K; // When start = 0 and dt = 1
+    if (i == ctrl_pts_.rows())
+        i -= 1;
+    return i;
 }
 
 template<typename T, int K>
