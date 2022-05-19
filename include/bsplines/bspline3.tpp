@@ -12,6 +12,16 @@ void BSpline3<T>::computeBasisMatrices() {
 }
 
 template<typename T>
+bool BSpline3<T>::updateBasisMatrices() {
+    int r{this->knot_pts_.rows()};
+    int i = std::max(r-7, 0);
+    for (; i != r; ++i)
+        this->M_[i] = computeNonUniformMatrix(i);
+
+    return true;
+}
+
+template<typename T>
 typename BSplineBase<T,3>::MatrixXT BSpline3<T>::computeNonUniformMatrix(int i) {
     int s{this->knot_pts_.rows()};
     typename BSplineBase<T,3>::MatrixXT M =

@@ -26,8 +26,7 @@ class BSpline3 : public BSplineBase<T, 3> {
 
  protected:
     void computeBasisMatrices() override;
-
-//  private:
+    bool updateBasisMatrices() override;
     typename BSplineBase<T,3>::MatrixXT computeNonUniformMatrix(int i);
 };
 

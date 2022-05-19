@@ -134,3 +134,32 @@ TEST_F(Spline3_Fixture, TestSpline3rdOrderTimeDerivativeEvaluation) {
     EXPECT_NEAR(x(1), y_true, 1e-7);
     EXPECT_NEAR(x(2), z_true, 1e-7);
 }
+
+TEST_F(Spline3_Fixture, AddAControlPoint) {
+    Eigen::Vector3d new_pt;
+    new_pt << 50, 50, -5;
+
+    bool success = spline_->addControlPoint(new_pt);
+    EXPECT_TRUE(success);
+
+    double t{6.0};
+    Eigen::Vector3d res;
+    res = (*spline_)(t);
+
+    double x{50.0}, y{50.0}, z{-5.0};
+
+    EXPECT_NEAR(x, res(0), 1e-7);
+    EXPECT_NEAR(y, res(1), 1e-7);
+    EXPECT_NEAR(z, res(2), 1e-7);
+
+    t = 5.0;
+    res = (*spline_)(t);
+
+    x = 37.5;
+    y = 39.5;
+    z = 10.0;
+
+    EXPECT_NEAR(x, res(0), 1e-7);
+    EXPECT_NEAR(y, res(1), 1e-7);
+    EXPECT_NEAR(z, res(2), 1e-7);
+}

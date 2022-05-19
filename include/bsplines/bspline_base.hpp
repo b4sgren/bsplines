@@ -30,12 +30,15 @@ class BSplineBase {
     VectorXT operator()(double t);
     VectorXT evaluateDerivative(double t, int n);
 
+    bool addControlPoint(const Eigen::Ref<const VectorXT> &pt);
+
     int degree() const;
     MatrixXT getControlPoints() const;
     VectorXT getKnotPoints() const;
 
  protected:
     virtual void computeBasisMatrices() = 0;
+    virtual bool updateBasisMatrices() = 0;
 
     double factorial(int i);
     int getI(double t);

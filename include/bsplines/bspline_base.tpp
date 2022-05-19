@@ -42,6 +42,23 @@ typename BSplineBase<T,K>::VectorXT BSplineBase<T,K>::evaluateDerivative
 }
 
 template<typename T, int K>
+bool BSplineBase<T,K>::addControlPoint(const Eigen::Ref<const VectorXT> &pt) {
+    if (pt.rows() != ctrl_pts_.cols())
+        return false;
+
+    ctrl_pts_.conservativeResize(ctrl_pts_.rows()+1, ctrl_pts_.cols());
+    ctrl_pts_.row(ctrl_pts_.rows()-1) = pt.transpose();
+
+    knot_pts_.conservativeResize(knot_pts_.rows()+1);
+    knot_pts_.tail(K+1) = VectorXT::Ones(K+1) * (ctrl_pts_.rows()-K);
+
+    M_.resize(knot_pts_.rows());
+    bool success = updateBasisMatrices();
+
+    return success;
+}
+
+template<typename T, int K>
 double BSplineBase<T,K>::factorial(int n) {
     double val{1.0};
     for (int i{1}; i != n+1; ++i)
